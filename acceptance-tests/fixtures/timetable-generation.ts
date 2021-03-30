@@ -31,7 +31,7 @@ export type TestRepresentableTimetableItem = {
     dayOfWeek: number;
 };
 
-export class TimetableCreationFixture {
+export class TimetableGenerationFixture {
     public timetable: TestRepresentableTimetableItem[] = [];
 
     createSubject(_info: SubjectCreationInfo) {
@@ -46,7 +46,7 @@ export class TimetableCreationFixture {
         throw new Error('Not implemented');
     }
 
-    createTimetable(_options: { classPerDay: number }) {
+    generateTimetable(_options: { classPerDay: number }) {
         const timetable: TestRepresentableTimetableItem[] = [];
 
         this.timetable = timetable;

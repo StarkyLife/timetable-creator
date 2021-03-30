@@ -1,6 +1,9 @@
 import {
-    GroupCreationInfo, SubjectCreationInfo, TeacherCreationInfo, TimetableCreationFixture,
-} from '@src/fixtures/timetable-creation';
+    GroupCreationInfo,
+    SubjectCreationInfo,
+    TeacherCreationInfo,
+    TimetableGenerationFixture,
+} from '@fixtures/timetable-generation';
 
 const defaultSubjectInfo: SubjectCreationInfo = { name: 'english' };
 const defaultTeacherInfoWith1HourLoad: TeacherCreationInfo = { name: 'teacher', expertises: [{ name: defaultSubjectInfo.name, load: 1 }] };
@@ -13,44 +16,44 @@ const defaultGroupWorkloadInfo: GroupCreationInfo['workload'][0] = {
     attachedTeachers: [],
 };
 
-let timetableCreation: TimetableCreationFixture;
+let timetableGeneration: TimetableGenerationFixture;
 
 beforeEach(() => {
-    timetableCreation = new TimetableCreationFixture();
+    timetableGeneration = new TimetableGenerationFixture();
 });
 
 describe.skip('Given subject and teacher', () => {
     beforeEach(() => {
-        timetableCreation.createSubject(defaultSubjectInfo);
+        timetableGeneration.createSubject(defaultSubjectInfo);
     });
 
     describe('Given teacher', () => {
         beforeEach(() => {
-            timetableCreation.createTeacher(defaultTeacherInfoWith1HourLoad);
+            timetableGeneration.createTeacher(defaultTeacherInfoWith1HourLoad);
         });
 
         it('should create empty timetable if no group exists', () => {
-            timetableCreation.createTimetable({ classPerDay: 1 });
+            timetableGeneration.generateTimetable({ classPerDay: 1 });
 
-            expect(timetableCreation.timetable.length).toBe(0);
+            expect(timetableGeneration.timetable.length).toBe(0);
         });
 
         it('should show empty timetable if teacher is not attached', () => {
-            timetableCreation.createGroup({
+            timetableGeneration.createGroup({
                 name: '9a',
                 type: '9',
                 workload: [defaultGroupWorkloadInfo],
             });
-            timetableCreation.createTimetable({ classPerDay: 1 });
+            timetableGeneration.generateTimetable({ classPerDay: 1 });
 
-            expect(timetableCreation.timetable.length).toEqual(0);
+            expect(timetableGeneration.timetable.length).toEqual(0);
         });
 
         describe('Given group that requires 2 teachers in 1 subject and 2 teachers', () => {
             beforeEach(() => {
-                timetableCreation.createTeacher({ name: 'Ilya', expertises: [{ name: defaultSubjectInfo.name, load: 1 }] });
-                timetableCreation.createTeacher({ name: 'Andrew', expertises: [{ name: defaultSubjectInfo.name, load: 1 }] });
-                timetableCreation.createGroup({
+                timetableGeneration.createTeacher({ name: 'Ilya', expertises: [{ name: defaultSubjectInfo.name, load: 1 }] });
+                timetableGeneration.createTeacher({ name: 'Andrew', expertises: [{ name: defaultSubjectInfo.name, load: 1 }] });
+                timetableGeneration.createGroup({
                     name: '9a',
                     type: '9',
                     workload: [
@@ -65,9 +68,9 @@ describe.skip('Given subject and teacher', () => {
             });
 
             it('should show information about 1 class with both teachers used', () => {
-                timetableCreation.createTimetable({ classPerDay: 1 });
+                timetableGeneration.generateTimetable({ classPerDay: 1 });
 
-                expect(timetableCreation.timetable).toEqual<typeof timetableCreation.timetable>([{
+                expect(timetableGeneration.timetable).toEqual<typeof timetableGeneration.timetable>([{
                     teachers: ['Ilya', 'Andrew'],
                     subject: defaultSubjectInfo.name,
                     groups: ['9a'],
@@ -79,8 +82,8 @@ describe.skip('Given subject and teacher', () => {
 
         describe('Given 2 groups with one type which can be combined and teacher with only 1 hour load', () => {
             beforeEach(() => {
-                timetableCreation.createTeacher(defaultTeacherInfoWith1HourLoad);
-                timetableCreation.createGroup({
+                timetableGeneration.createTeacher(defaultTeacherInfoWith1HourLoad);
+                timetableGeneration.createGroup({
                     name: '9a',
                     type: '9',
                     workload: [{
@@ -89,7 +92,7 @@ describe.skip('Given subject and teacher', () => {
                         attachedTeachers: [defaultTeacherInfoWith1HourLoad.name],
                     }],
                 });
-                timetableCreation.createGroup({
+                timetableGeneration.createGroup({
                     name: '9b',
                     type: '9',
                     workload: [{
@@ -101,9 +104,9 @@ describe.skip('Given subject and teacher', () => {
             });
 
             it('it should create 1 lesson for 2 groups', () => {
-                timetableCreation.createTimetable({ classPerDay: 1 });
+                timetableGeneration.generateTimetable({ classPerDay: 1 });
 
-                expect(timetableCreation.timetable).toEqual<typeof timetableCreation.timetable>([{
+                expect(timetableGeneration.timetable).toEqual<typeof timetableGeneration.timetable>([{
                     teachers: [defaultTeacherInfoWith1HourLoad.name],
                     subject: defaultSubjectInfo.name,
                     groups: ['9a', '9b'],
@@ -119,13 +122,13 @@ describe.skip('Given 2 subjects', () => {
     const secondSubject: SubjectCreationInfo = { name: 'randomSubject' };
 
     beforeEach(() => {
-        timetableCreation.createSubject(defaultSubjectInfo);
-        timetableCreation.createSubject(secondSubject);
+        timetableGeneration.createSubject(defaultSubjectInfo);
+        timetableGeneration.createSubject(secondSubject);
     });
 
     describe('Given teacher with expertise in this subjects with 2 hour load', () => {
         beforeEach(() => {
-            timetableCreation.createTeacher({
+            timetableGeneration.createTeacher({
                 name: 'teacher',
                 expertises: [
                     { name: defaultSubjectInfo.name, load: 1 },
@@ -135,7 +138,7 @@ describe.skip('Given 2 subjects', () => {
         });
 
         it('should show information about 2 classes in two days when create timetable with 1 class/day load', () => {
-            timetableCreation.createGroup({
+            timetableGeneration.createGroup({
                 name: '9a',
                 type: '9',
                 workload: [{
@@ -148,9 +151,9 @@ describe.skip('Given 2 subjects', () => {
                     attachedTeachers: ['teacher'],
                 }],
             });
-            timetableCreation.createTimetable({ classPerDay: 1 });
+            timetableGeneration.generateTimetable({ classPerDay: 1 });
 
-            expect(timetableCreation.timetable).toEqual<typeof timetableCreation.timetable>([
+            expect(timetableGeneration.timetable).toEqual<typeof timetableGeneration.timetable>([
                 {
                     teachers: ['teacher'],
                     subject: defaultSubjectInfo.name,

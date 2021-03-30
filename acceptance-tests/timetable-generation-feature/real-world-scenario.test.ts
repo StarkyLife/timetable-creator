@@ -2,8 +2,8 @@ import {
     GroupCreationInfo,
     SubjectCreationInfo,
     TeacherCreationInfo,
-    TimetableCreationFixture,
-} from '@src/fixtures/timetable-creation';
+    TimetableGenerationFixture,
+} from '@fixtures/timetable-generation';
 
 const subjectNames = {
     RUSSIAN_LANGUAGE: 'рус.язык',
@@ -172,74 +172,74 @@ const groups: GroupCreationInfo[] = [
     { name: '7б', type: '7', workload: groupWorkload },
 ];
 
-let timetableCreation: TimetableCreationFixture;
+let timetableGeneration: TimetableGenerationFixture;
 
 beforeEach(() => {
-    timetableCreation = new TimetableCreationFixture();
+    timetableGeneration = new TimetableGenerationFixture();
 });
 
 describe.skip('Given subjects', () => {
     beforeEach(() => {
-        subjectsForGroup.forEach(timetableCreation.createSubject);
+        subjectsForGroup.forEach(timetableGeneration.createSubject);
     });
 
     describe('Given teachers for subjects', () => {
         beforeEach(() => {
-            teachers.forEach(timetableCreation.createTeacher);
+            teachers.forEach(timetableGeneration.createTeacher);
         });
 
         describe('Given groups', () => {
             beforeEach(() => {
-                groups.forEach(timetableCreation.createGroup);
+                groups.forEach(timetableGeneration.createGroup);
             });
 
             it('should create timetable with correct number of lessons for each day', () => {
-                timetableCreation.createTimetable({ classPerDay: 6 });
+                timetableGeneration.generateTimetable({ classPerDay: 6 });
 
                 expect(
-                    timetableCreation.getNumberOfLessonsForEachDay().every((n) => n <= 6),
+                    timetableGeneration.getNumberOfLessonsForEachDay().every((n) => n <= 6),
                 ).toBe(true);
             });
             it('should create timetable with correct group load', () => {
-                timetableCreation.createTimetable({ classPerDay: 6 });
+                timetableGeneration.generateTimetable({ classPerDay: 6 });
 
                 groups.forEach((group) => {
                     expect(
-                        timetableCreation.getTotalNumberOfLessonsOfGroup(group.name),
+                        timetableGeneration.getTotalNumberOfLessonsOfGroup(group.name),
                     ).toEqual(
-                        timetableCreation.getGroupTotalLoad(group.name),
+                        timetableGeneration.getGroupTotalLoad(group.name),
                     );
                 });
             });
 
             describe.each(teachers)('For teacher %s', (teacher) => {
                 it('should create timetable with correct load', () => {
-                    timetableCreation.createTimetable({ classPerDay: 6 });
+                    timetableGeneration.generateTimetable({ classPerDay: 6 });
 
-                    expect(timetableCreation.getGivenTeacherActualLoad(teacher.name))
+                    expect(timetableGeneration.getGivenTeacherActualLoad(teacher.name))
                         .toEqual(teacher.expertises.reduce((totalLoad, e) => totalLoad + e.load, 0));
                 });
 
                 it('should create timetable where teacher have his days-off', () => {
-                    timetableCreation.createTimetable({ classPerDay: 6 });
+                    timetableGeneration.generateTimetable({ classPerDay: 6 });
 
-                    expect(timetableCreation.getTeacherLessonsCountInOffDays(teacher.name)).toBe(0);
+                    expect(timetableGeneration.getTeacherLessonsCountInOffDays(teacher.name)).toBe(0);
                 });
             });
 
             describe.each(groups)('For group %s', (group) => {
                 describe.each(group.workload)('for subject %s', (loadInfo) => {
                     it('should create timetable with correct load', () => {
-                        timetableCreation.createTimetable({ classPerDay: 6 });
+                        timetableGeneration.generateTimetable({ classPerDay: 6 });
 
-                        expect(timetableCreation.getGivenSubjectActualLoadForGivenGroup(loadInfo.subject, group.name))
+                        expect(timetableGeneration.getGivenSubjectActualLoadForGivenGroup(loadInfo.subject, group.name))
                             .toEqual(loadInfo.load);
                     });
 
                     it('should create timetable in which lessons with subject are less or equal maxPerDay', () => {
-                        timetableCreation.createTimetable({ classPerDay: 6 });
+                        timetableGeneration.generateTimetable({ classPerDay: 6 });
 
-                        const lessonsCountForEveryDay = timetableCreation.getLessonsADayCountForSubject(loadInfo.subject, group.name);
+                        const lessonsCountForEveryDay = timetableGeneration.getLessonsADayCountForSubject(loadInfo.subject, group.name);
 
                         expect(lessonsCountForEveryDay.every((c) => c <= loadInfo.maxForDay))
                             .toBe(true);
@@ -247,9 +247,9 @@ describe.skip('Given subjects', () => {
                 });
 
                 it('should create timetable in which 1-4 lessons are the most difficult ones and 5-* are least difficult', () => {
-                    timetableCreation.createTimetable({ classPerDay: 6 });
+                    timetableGeneration.generateTimetable({ classPerDay: 6 });
 
-                    const daysWithLessonsDifficulties = timetableCreation.getLessonsDifficultiesByDay(group.name);
+                    const daysWithLessonsDifficulties = timetableGeneration.getLessonsDifficultiesByDay(group.name);
 
                     daysWithLessonsDifficulties.forEach((lessonsDifficulty) => {
                         expect(lessonsDifficulty.fifth).toBeLessThan(lessonsDifficulty.first);
@@ -265,9 +265,9 @@ describe.skip('Given subjects', () => {
                 });
 
                 it('should create timetable in which Tuesday, Wednesday and Thursday are most difficult and Saturday is least difficult', () => {
-                    timetableCreation.createTimetable({ classPerDay: 6 });
+                    timetableGeneration.generateTimetable({ classPerDay: 6 });
 
-                    const daysDifficulty = timetableCreation.getDaysDifficultyForGroup(group.name);
+                    const daysDifficulty = timetableGeneration.getDaysDifficultyForGroup(group.name);
 
                     expect(daysDifficulty.Monday).toBeLessThan(daysDifficulty.Tuesday);
                     expect(daysDifficulty.Monday).toBeLessThan(daysDifficulty.Wednesday);

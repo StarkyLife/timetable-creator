@@ -2,7 +2,8 @@
     "compilerOptions": {
         "baseUrl": "./",
         "paths": {
-            "@src/*": ["src/*"]
+            "@src/*": ["src/*"],
+            "@fixtures/*": ["acceptance-tests/fixtures/*"]
         },
         "noUnusedLocals": true,
         "noUnusedParameters": true,
