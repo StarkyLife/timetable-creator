@@ -168,8 +168,8 @@ const groupWorkload: GroupCreationInfo['workload'] = [
 ];
 
 const groups: GroupCreationInfo[] = [
-    { name: '7a', workload: groupWorkload },
-    { name: '7б', workload: groupWorkload },
+    { name: '7a', type: '7', workload: groupWorkload },
+    { name: '7б', type: '7', workload: groupWorkload },
 ];
 
 let timetableCreation: TimetableCreationFixture;

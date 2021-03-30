@@ -12,6 +12,7 @@ export type TeacherCreationInfo = {
 
 export type GroupCreationInfo = {
     name: string;
+    type: string;
     workload: Array<{
         subject: string;
         load: number;
@@ -25,7 +26,7 @@ export type GroupCreationInfo = {
 export type TestRepresentableTimetableItem = {
     teachers: string[];
     subject: string;
-    group: string;
+    groups: string[];
     lesson: number;
     dayOfWeek: number;
 };
