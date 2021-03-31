@@ -3,7 +3,7 @@ import {
     SubjectCreationInfo,
     TeacherCreationInfo,
     TimetableGenerationFixture,
-} from '@fixtures/timetable-generation';
+} from '@tests/fixtures/timetable-generation';
 
 const subjectNames = {
     RUSSIAN_LANGUAGE: 'рус.язык',

@@ -3,7 +3,7 @@
         "baseUrl": "./",
         "paths": {
             "@src/*": ["src/*"],
-            "@fixtures/*": ["acceptance-tests/fixtures/*"]
+            "@tests/*": ["tests/*"]
         },
         "noUnusedLocals": true,
         "noUnusedParameters": true,
@@ -28,6 +28,6 @@
     },
     "include": [
         "src/**/*.ts",
-        "acceptance-tests/**/*.ts"
+        "tests/**/*.ts"
     ]
 }

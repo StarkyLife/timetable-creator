@@ -3,7 +3,7 @@ import {
     SubjectCreationInfo,
     TeacherCreationInfo,
     TimetableGenerationFixture,
-} from '@fixtures/timetable-generation';
+} from '@tests/fixtures/timetable-generation';
 
 const defaultSubjectInfo: SubjectCreationInfo = { name: 'english' };
 const defaultTeacherInfoWith1HourLoad: TeacherCreationInfo = { name: 'teacher', expertises: [{ name: defaultSubjectInfo.name, load: 1 }] };

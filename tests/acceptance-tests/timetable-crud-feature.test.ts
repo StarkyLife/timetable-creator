@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { TimetableCRUDFixture } from '@fixtures/timetable-crud-fixture';
+import { TimetableCRUDFixture } from '@tests/fixtures/timetable-crud-fixture';
 
 let timetableCRUD: TimetableCRUDFixture;
 
@@ -7,7 +7,7 @@ beforeEach(() => {
     timetableCRUD = new TimetableCRUDFixture();
 });
 
-describe.skip('Given saved timetable', () => {
+describe('Given saved timetable', () => {
     const defaultTimetableName = 't1';
 
     beforeEach(() => {
@@ -40,15 +40,5 @@ describe.skip('Given saved timetable', () => {
         const updatedTimetable = timetableCRUD.getTimetableById(savedTimetable!.id);
 
         expect(updatedTimetable!.name).toEqual('newName');
-    });
-});
-
-describe.skip('Validation', () => {
-    it('should throw an error if trying to CREATE timetable with wrong format', () => {
-        expect(() => timetableCRUD.createTimetableWithWrongFormat('t2')).toThrowError();
-    });
-
-    it('should throw an error if trying to UPDATE timetable with wrong format', () => {
-        expect(() => timetableCRUD.updateTimetableWithWrongFormat('t2')).toThrowError();
     });
 });
