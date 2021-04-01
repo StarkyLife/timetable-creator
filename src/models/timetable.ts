@@ -20,6 +20,7 @@ export type Timetable = {
     groups?: Group[];
     lessons?: TimetableLesson[];
 };
+export type SavedTimetable = Omit<Timetable, 'id'> & { id: string };
 
 const timetableLessonSchema = yup.object({
     ordinalDayNumber: yup.number().required(),
