@@ -42,3 +42,10 @@ describe('Given saved timetable', () => {
         expect(updatedTimetable!.name).toEqual('newName');
     });
 });
+
+describe('Validation', () => {
+    it('should throw an error given invalid data for saving', () => {
+        expect(() => timetableCRUD.createTimetableWithWrongFormat())
+            .toThrowError();
+    });
+});

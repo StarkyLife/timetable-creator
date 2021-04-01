@@ -7,9 +7,9 @@ export function createMockTimetableGateway(): TimetableGateway {
 
     return {
         save(timetable) {
-            const id = uniqueId();
+            const currentId = timetable.id || uniqueId();
 
-            savedTimetables.set(id, { id, ...timetable });
+            savedTimetables.set(currentId, { ...timetable, id: currentId });
         },
         getAll() {
             return Array.from(savedTimetables.values());
@@ -23,9 +23,6 @@ export function createMockTimetableGateway(): TimetableGateway {
         },
         delete(id) {
             savedTimetables.delete(id);
-        },
-        update(timetable) {
-            if (savedTimetables.has(timetable.id)) savedTimetables.set(timetable.id, timetable);
         },
     };
 }
