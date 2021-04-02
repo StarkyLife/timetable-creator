@@ -21,7 +21,6 @@
         "strict": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
         "preserveConstEnums": true,
 
         "forceConsistentCasingInFileNames": true

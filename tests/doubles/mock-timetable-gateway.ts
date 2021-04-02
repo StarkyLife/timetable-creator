@@ -1,5 +1,5 @@
-import { SavedTimetable } from '@src/models/timetable';
-import type { TimetableGateway } from '@src/timetable-gateway';
+import { SavedTimetable } from '@src/core/models/timetable';
+import type { TimetableGateway } from '@src/core/timetable-gateway';
 import { uniqueId } from 'lodash';
 
 export function createMockTimetableGateway(): TimetableGateway {

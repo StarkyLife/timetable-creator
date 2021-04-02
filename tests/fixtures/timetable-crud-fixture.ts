@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
 
-import { TimetableGateway } from '@src/timetable-gateway';
-import { createTimetableInteractor } from '@src/timetable-interactor';
+import { TimetableGateway } from '@src/core/timetable-gateway';
+import { createTimetableInteractor } from '@src/core/timetable-interactor';
 import { createMockTimetableGateway } from '@tests/doubles/mock-timetable-gateway';
 
 type TimetableTestRepresentation = { id: string; name: string };
