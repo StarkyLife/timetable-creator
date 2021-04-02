@@ -10,16 +10,15 @@
         "sourceMap": true,
         "skipLibCheck": true,
         "incremental": true,
-        "target": "esnext",
-        "module": "esnext",
-        "lib": [
-            "esnext"
-        ],
-        "removeComments": false,
+
+        "target": "ESNext",
+        "module": "CommonJS",
+        "lib": ["ESNext"],
         "resolveJsonModule": true,
 
         "strict": true,
         "moduleResolution": "node",
+        "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "preserveConstEnums": true,
 
@@ -28,5 +27,8 @@
     "include": [
         "src/**/*.ts",
         "tests/**/*.ts"
-    ]
+    ],
+    "ts-node": {
+        "require": ["tsconfig-paths/register"]
+    }
 }

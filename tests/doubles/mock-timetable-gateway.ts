@@ -1,4 +1,4 @@
-import { SavedTimetable } from '@src/core/models/timetable';
+import type { SavedTimetable } from '@src/core/models/timetable';
 import type { TimetableGateway } from '@src/core/timetable-gateway';
 import { uniqueId } from 'lodash';
 

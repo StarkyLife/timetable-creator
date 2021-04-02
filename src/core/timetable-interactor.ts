@@ -1,6 +1,6 @@
-import { CanSaveTimetable } from './can-save-timetable';
+import type { CanSaveTimetable } from './can-save-timetable';
 import { createTimetable, Timetable } from './models/timetable';
-import { TimetableGateway } from './timetable-gateway';
+import type { TimetableGateway } from './timetable-gateway';
 
 export function createTimetableInteractor(gateway: TimetableGateway): CanSaveTimetable {
     return {
