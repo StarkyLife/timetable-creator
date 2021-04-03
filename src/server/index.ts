@@ -1,6 +1,7 @@
 import { createTimetableInteractor } from '@src/core/timetable-interactor';
 import { createMockTimetableGateway } from '@tests/doubles/mock-timetable-gateway';
 import express from 'express';
+import cors from 'cors';
 import { createTimetableController } from './controllers/timetable-controller';
 
 const app = express();
@@ -9,6 +10,7 @@ const timetableGateway = createMockTimetableGateway();
 const timetableInteractor = createTimetableInteractor(timetableGateway);
 
 app.use(express.json());
+app.use(cors());
 
 app.use(
     '/timetable',
