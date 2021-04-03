@@ -43,7 +43,7 @@ describe('Middlware factory', () => {
 
     it('should pass request payload to action function', () => {
         const PAYLOAD = { hello: '1' };
-        const actionFn: MiddlewareActionFn<typeof PAYLOAD> = jest.fn();
+        const actionFn: MiddlewareActionFn = jest.fn();
         const responseMock = { json: jest.fn() } as Partial<Response>;
 
         createAndCallMiddleware(
@@ -52,6 +52,20 @@ describe('Middlware factory', () => {
             responseMock,
         );
 
-        expect(actionFn).toHaveBeenCalledWith(PAYLOAD);
+        expect(actionFn).toHaveBeenCalledWith(PAYLOAD, undefined);
+    });
+
+    it('should pass request params to action function', () => {
+        const PARAMS = { id: '1' };
+        const actionFn: MiddlewareActionFn = jest.fn();
+        const responseMock = { json: jest.fn() } as Partial<Response>;
+
+        createAndCallMiddleware(
+            actionFn,
+            { params: PARAMS, body: null },
+            responseMock,
+        );
+
+        expect(actionFn).toHaveBeenCalledWith(null, PARAMS);
     });
 });
