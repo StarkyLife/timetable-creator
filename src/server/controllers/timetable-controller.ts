@@ -1,39 +1,17 @@
-import type { CanGetTimetablesShortInfoList, CanSaveTimetable, TimetableInteractor } from '@src/core/timetable-interactor-types';
-import { Router, RequestHandler } from 'express';
+import { SavedTimetableRepresentation, TimetableRepresentation, TimetableShortInfoRepresentation } from '@src/core/representation-models/timetable-representation';
+import type { TimetableInteractor } from '@src/core/timetable-interactor-types';
+import { Router } from 'express';
+import { createMiddleware } from '../utils/middleware-factory';
 
 export function createTimetableController(timetableInteractor: TimetableInteractor) {
     const router = Router();
 
-    router.post('/', createTimetableSaveMiddleware(timetableInteractor));
-    router.get('/', createTimetablesListGetMiddleware(timetableInteractor));
+    router.post('/', createMiddleware<TimetableRepresentation, SavedTimetableRepresentation>(
+        (payload) => timetableInteractor.save(payload),
+    ));
+    router.get('/', createMiddleware<unknown, TimetableShortInfoRepresentation[]>(
+        timetableInteractor.getTimetablesShortInfoList,
+    ));
 
     return router;
-}
-
-export function createTimetableSaveMiddleware(
-    timetableSaver: CanSaveTimetable,
-): RequestHandler {
-    return (request, response) => {
-        try {
-            return response.json(
-                timetableSaver.save(request.body),
-            );
-        } catch (error) {
-            return response.sendStatus(500);
-        }
-    };
-}
-
-export function createTimetablesListGetMiddleware(
-    timetablesListGetter: CanGetTimetablesShortInfoList,
-): RequestHandler {
-    return (_request, response) => {
-        try {
-            return response.json(
-                timetablesListGetter.getTimetablesShortInfoList(),
-            );
-        } catch (error) {
-            return response.sendStatus(500);
-        }
-    };
 }
