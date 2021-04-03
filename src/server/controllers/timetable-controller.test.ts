@@ -1,5 +1,5 @@
-import { CanSaveTimetable } from '@src/core/can-save-timetable';
-import { SavedTimetable, Timetable } from '@src/core/models/timetable';
+import { SavedTimetableRepresentation, TimetableRepresentation } from '@src/core/representation-models/timetable-representation';
+import { CanSaveTimetable } from '@src/core/timetable-interactor-types';
 import { Request, Response } from 'express';
 import { createTimetableSaveMiddleware } from './timetable-controller';
 
@@ -15,8 +15,8 @@ describe('Middleware for timetable saving', () => {
     }
 
     describe('Given timetable saver returning saved timetable', () => {
-        const VALID_TIMETABLE: Timetable = { name: 'timetable' };
-        const SAVED_TIMETABLE: SavedTimetable = {
+        const VALID_TIMETABLE: TimetableRepresentation = { name: 'timetable' };
+        const SAVED_TIMETABLE: SavedTimetableRepresentation = {
             ...VALID_TIMETABLE,
             id: 'id',
         };

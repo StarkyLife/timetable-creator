@@ -1,4 +1,4 @@
-import { Timetable, SavedTimetable } from './models/timetable';
+import { Timetable, SavedTimetable } from './entities/timetable';
 
 export interface TimetableGateway {
     getAll: () => SavedTimetable[];

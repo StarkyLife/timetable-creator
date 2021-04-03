@@ -1,4 +1,4 @@
-import type { CanSaveTimetable } from '@src/core/can-save-timetable';
+import type { CanSaveTimetable } from '@src/core/timetable-interactor-types';
 import { Router, RequestHandler } from 'express';
 
 export function createTimetableController(timetableSaver: CanSaveTimetable) {

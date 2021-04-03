@@ -11,16 +11,16 @@ describe('Given saved timetable', () => {
     const defaultTimetableName = 't1';
 
     beforeEach(() => {
-        timetableCRUD.createTimetable(defaultTimetableName);
+        timetableCRUD.createEmptyTimetable(defaultTimetableName);
     });
 
     it('can get list of saved timetables', () => {
-        const secondTimetable = 't2';
+        const secondTimetableName = 't2';
 
-        timetableCRUD.createTimetable(secondTimetable);
+        timetableCRUD.createEmptyTimetable(secondTimetableName);
 
         expect(timetableCRUD.getSavedTimetablesNames())
-            .toEqual([defaultTimetableName, secondTimetable]);
+            .toEqual([defaultTimetableName, secondTimetableName]);
     });
 
     it('can delete existing timetable', () => {
@@ -40,5 +40,31 @@ describe('Given saved timetable', () => {
         const updatedTimetable = timetableCRUD.getTimetableById(savedTimetable!.id);
 
         expect(updatedTimetable!.name).toEqual('newName');
+    });
+});
+
+describe('Given 2 filled timetables', () => {
+    const firstTimetableName = 'one';
+    const secondTimetableName = 'two';
+
+    beforeEach(() => {
+        timetableCRUD.updateTimetable({
+            ...timetableCRUD.createEmptyTimetable(firstTimetableName),
+            subjects: [{ id: 'id', name: 's' }],
+        });
+        timetableCRUD.updateTimetable({
+            ...timetableCRUD.createEmptyTimetable(secondTimetableName),
+            subjects: [{ id: 'id', name: 's' }],
+        });
+    });
+
+    it('can get short info about all available timetables', () => {
+        expect(timetableCRUD.getTimetablesShortInfoList())
+            .toEqual(
+                expect.arrayContaining([
+                    { id: expect.any(String), name: firstTimetableName },
+                    { id: expect.any(String), name: secondTimetableName },
+                ]),
+            );
     });
 });

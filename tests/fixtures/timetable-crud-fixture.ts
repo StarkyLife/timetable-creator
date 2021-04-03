@@ -1,8 +1,7 @@
+import { SavedTimetableRepresentation, TimetableRepresentation } from '@src/core/representation-models/timetable-representation';
 import { TimetableGateway } from '@src/core/timetable-gateway';
 import { createTimetableInteractor } from '@src/core/timetable-interactor';
 import { createMockTimetableGateway } from '@tests/doubles/mock-timetable-gateway';
-
-type TimetableTestRepresentation = { id: string; name: string };
 
 export class TimetableCRUDFixture {
     private timetableGateway: TimetableGateway;
@@ -14,31 +13,33 @@ export class TimetableCRUDFixture {
         this.timetableInteractor = createTimetableInteractor(this.timetableGateway);
     }
 
-    createTimetable(name: string) {
-        this.timetableInteractor.save({ name });
+    createEmptyTimetable(name: string) {
+        return this.timetableInteractor.save({ name });
     }
 
-    updateTimetable(timetable: TimetableTestRepresentation) {
-        this.timetableInteractor.save(timetable);
+    updateTimetable(timetable: TimetableRepresentation) {
+        return this.timetableInteractor.save(timetable);
     }
 
     deleteTimetable(name: string) {
         const timetable = this.timetableGateway.getByName(name);
 
-        if (timetable?.id) this.timetableGateway.delete(timetable.id);
+        if (timetable?.id) this.timetableInteractor.deleteTimetable(timetable.id);
     }
 
-    getTimetableById(id: string): TimetableTestRepresentation | null {
-        return this.timetableGateway.getById(id);
+    getTimetableById(id: string): SavedTimetableRepresentation | null {
+        return this.timetableInteractor.getTimetable(id);
+    }
+
+    getTimetablesShortInfoList(): Array<{ id: string; name: string }> {
+        return this.timetableInteractor.getTimetablesShortInfoList();
     }
 
     getSavedTimetablesNames() {
-        const timetables = this.timetableGateway.getAll();
-
-        return timetables.map((t) => t.name);
+        return this.timetableGateway.getAll().map((t) => t.name);
     }
 
-    getTimetableByName(name: string): TimetableTestRepresentation | null {
+    getTimetableByName(name: string): SavedTimetableRepresentation | null {
         return this.timetableGateway.getByName(name);
     }
 }
