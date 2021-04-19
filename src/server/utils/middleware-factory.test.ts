@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import {
-    createMiddleware, MiddlewareActionFn,
+    createMiddleware,
+    MiddlewareActionFn,
 } from './middleware-factory';
 
 function createAndCallMiddleware<Payload, ResponsePayload>(
@@ -14,18 +15,21 @@ function createAndCallMiddleware<Payload, ResponsePayload>(
 }
 
 describe('Middlware factory', () => {
-    it('should respond with actionFunction return result as json', () => {
-        const ACTION_FN_RESULT = { hello: '1' };
-        const actionFn: MiddlewareActionFn<unknown, typeof ACTION_FN_RESULT> = () => ACTION_FN_RESULT;
+    it('should respond with json given actionFn returning data', () => {
+        const ACTION_FN_RETURN = { data: 'actionFn' };
+        const PARAMS = { id: '1' };
+        const PAYLOAD = { hello: '1' };
+        const actionFn: MiddlewareActionFn = jest.fn(() => ACTION_FN_RETURN);
         const responseMock = { json: jest.fn() } as Partial<Response>;
 
         createAndCallMiddleware(
             actionFn,
-            {},
+            { params: PARAMS, body: PAYLOAD },
             responseMock,
         );
 
-        expect(responseMock.json).toHaveBeenCalledWith(ACTION_FN_RESULT);
+        expect(responseMock.json).toHaveBeenCalledWith(ACTION_FN_RETURN);
+        expect(actionFn).toHaveBeenCalledWith(PAYLOAD, PARAMS);
     });
 
     it('should respond with statusCode = 500 given action function throwing error', () => {
@@ -39,33 +43,5 @@ describe('Middlware factory', () => {
         );
 
         expect(responseMock.sendStatus).toHaveBeenCalledWith(500);
-    });
-
-    it('should pass request payload to action function', () => {
-        const PAYLOAD = { hello: '1' };
-        const actionFn: MiddlewareActionFn = jest.fn();
-        const responseMock = { json: jest.fn() } as Partial<Response>;
-
-        createAndCallMiddleware(
-            actionFn,
-            { body: PAYLOAD },
-            responseMock,
-        );
-
-        expect(actionFn).toHaveBeenCalledWith(PAYLOAD, undefined);
-    });
-
-    it('should pass request params to action function', () => {
-        const PARAMS = { id: '1' };
-        const actionFn: MiddlewareActionFn = jest.fn();
-        const responseMock = { json: jest.fn() } as Partial<Response>;
-
-        createAndCallMiddleware(
-            actionFn,
-            { params: PARAMS, body: null },
-            responseMock,
-        );
-
-        expect(actionFn).toHaveBeenCalledWith(null, PARAMS);
     });
 });
