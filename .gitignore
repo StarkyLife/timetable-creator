@@ -104,3 +104,7 @@ dist
 .tern-port
 
 build
+reports
+
+# stryker temp files
+.stryker-tmp
